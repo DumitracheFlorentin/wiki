@@ -1,0 +1,50 @@
+<!-- TODO: Text cu "Acest articol este protejat" sau nimic otherwise -->
+<!-- TODO: pagina de edit articol + buton -->
+<h1>{{titlu}}</h1>
+
+    <div *ngIf="!isEditing">
+    <button mat-flat-button color="primary" style="float:right" (click)="editArticle($event)" [disabled]="!canBeEdited" >
+        <mat-icon>edit</mat-icon>
+        <span> Editeaza articolul</span>
+    </button>
+        <markdown [data]="markdownText"></markdown>
+</div>
+
+    <div *ngIf="isEditing" display="block">
+        <div class="buttonHolder">
+            <button mat-flat-button color="primary" style="float:left" (click)="saveEdit($event)">
+                <mat-icon>save</mat-icon>
+                <span> Salveaza modificarile</span>
+            </button>
+
+            <button mat-flat-button color="warn" style="float:right" (click)="cancelEdit($event)">
+                <mat-icon>cancel</mat-icon>
+                <span> Anuleaza modificarile</span>
+            </button>
+            <div style="padding-left:210px">
+                <mat-icon color="primary">{{isLocked}}</mat-icon>
+                <mat-slide-toggle color="primary" (change)="checkIsProtected($event)" [(ngModel)]="isProtected" [disabled]="!canChangeProtejat">{{textProtected}}</mat-slide-toggle>
+            </div>
+
+        <div class="clear"></div>
+        </div>
+        <div>
+            
+    </div>
+        <form [formGroup]="templateForm" novalidate >
+            <div class="editor">
+                <angular-markdown-editor textareaId="editor1" [options]="editorOptions"
+                    name="markdownTextCopy" [(ngModel)]="markdownTextCopy" formControlName="body" >
+                </angular-markdown-editor>
+            </div>
+        </form>
+
+        <br>
+        <div>
+            <button [disabled]="!isModerator" mat-flat-button color="warn" style="float:left" (click)="revertEdit($event)">
+                <mat-icon>undo</mat-icon>
+                <span> Revenire la versiunea anterioara a continutului</span>
+            </button>
+        </div>
+
+
