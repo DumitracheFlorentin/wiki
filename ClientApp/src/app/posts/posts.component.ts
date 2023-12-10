@@ -25,7 +25,6 @@ export class PostsComponent implements OnInit {
 
   public canChangeProtejat = false;
   public isModerator = false;
-  public canBeEdited = false;
 
   public titlu = ''
   
@@ -47,21 +46,14 @@ export class PostsComponent implements OnInit {
     private router: Router,
   ) 
   { console.log(this.authService.getRoles())
-    http.get<ArticolInterface>(environment.apiPath + '/articol/' + this.route.snapshot.paramMap.get('title')).subscribe(async result => {
+    http.get<ArticolResponseInterface>(environment.apiPath + '/core/' + this.route.snapshot.paramMap.get('title')).subscribe(async result => {
         
-      this.articol = await result;
+      const res = await result;
+      this.articol = res.message;
+      
       this.titlu = this.articol.titlu
-      console.log(this.articol);
-      console.log(this.authService.getUser()?.name == this.articol.user)
-      this.canChangeProtejat = (this.authService.getRoles()?.includes(RoleEnum.Moderator) 
-      || this.authService.getUser()?.name == this.articol.user) ? true : false;
-      if(!this.authService.isLoggedIn()) {
-        this.canChangeProtejat = false;
-      }
       this.isModerator = this.authService.getRoles()?.includes(RoleEnum.Moderator) ? true : false;
       this.markdownText = this.articol.continut
-      this.isProtected = this.articol.protejat
-      this.canBeEdited = this.authService.getUser() || !this.isProtected ? true : false
       this.setTextIsProtected()
     }, error => console.error(error));
   }
@@ -191,6 +183,11 @@ export class PostsComponent implements OnInit {
 
     return markedOutput;
   }
+}
+
+interface ArticolResponseInterface {
+  message: ArticolInterface,
+  success: boolean
 }
 
 interface ArticolInterface {

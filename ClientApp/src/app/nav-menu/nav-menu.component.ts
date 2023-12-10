@@ -43,9 +43,9 @@ export class NavMenuComponent {
   /*SearchBar function*/
   search(value: string) {
     if (value !== "") {
-      this.http.get<string[]>(environment.apiPath + "/articol/alltitles/" + value).subscribe(async result => {
-        this.articole = await result;
-        console.log(this.articole);
+      this.http.get<SearchArticleInterface>(environment.apiPath + "/core/alltitles/" + value).subscribe(async result => {
+        const res = await result;
+        this.articole = res.message;
         
         let input = document.getElementById('')
 
@@ -73,4 +73,9 @@ export class NavMenuComponent {
     }
   }
 
+}
+
+interface SearchArticleInterface {
+  message: Array<string>,
+  success: boolean
 }

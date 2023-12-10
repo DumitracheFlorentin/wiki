@@ -15,9 +15,8 @@ export class ArticoleComponent {
   public domeniu = this.route.snapshot.paramMap.get('domeniu')
 
   constructor(http: HttpClient, private route: ActivatedRoute, private datepipe: DatePipe) {
-    console.log(this.route.snapshot.paramMap.get('domeniu'))
-    http.get<ArticolInterface[]>(environment.apiPath + '/articol/articole-domeniu/' + this.route.snapshot.paramMap.get('domeniu')).subscribe(result => {
-      this.listaArticole = result;
+    http.get<ArticolResponseInterface>(environment.apiPath + '/core/articole-domeniu/' + this.route.snapshot.paramMap.get('domeniu')).subscribe(result => {
+      this.listaArticole = result.message;
       for (var articol of this.listaArticole) {
         articol.data_adaugarii = this.datepipe.transform(articol.data_adaugarii as string, 'dd/MM/yyyy') as string
       }
@@ -60,6 +59,10 @@ function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
+interface ArticolResponseInterface {
+  message: Array<ArticolInterface>,
+  success: boolean
+}
 
 interface ArticolInterface {
   Id: number;
