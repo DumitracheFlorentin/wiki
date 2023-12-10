@@ -18,18 +18,20 @@ export class HomeComponent {
 
   constructor(http: HttpClient, private datepipe: DatePipe, private authenticationService: AuthenticationService) {
     console.log(environment.apiPath + '/articol')
-      http.get<ArticolInterface[]>(environment.apiPath + '/articol/first50').subscribe(async result => {
+      http.get<ArticolResponseInterface>(environment.apiPath + '/core/all').subscribe(async result => {
         
-        this.articole = await result;
+        const res = await result;
+        this.articole = res.message;
         for (var articol of this.articole) {
           articol.link = this.generateLinkFromTitle(window.location.pathname, articol.titlu)
-          articol.data_adaugarii = this.datepipe.transform(articol.data_adaugarii as string, 'dd/MM/yyyy') as string
+          articol.dataCreari  = this.datepipe.transform(articol.dataCreari as string, 'dd/MM/yyyy') as string
         }
         this.articoleFiltrate = this.articole;
       }, error => console.error(error));
-      http.get<string[]>(environment.apiPath + '/articol/alldomains').subscribe(async result => {
+      http.get<DomeniiResponseInterface>(environment.apiPath + '/core/alldomains').subscribe(async result => {
         
-        this.domenii = await result;
+        const res = await result;
+        this.domenii = res.message;
         console.log(this.domenii);
       }, error => console.error(error));
   }
@@ -66,14 +68,22 @@ export class HomeComponent {
   
 }
 
+interface DomeniiResponseInterface {
+  message: Array<string>,
+  success: boolean
+}
+
+interface ArticolResponseInterface {
+  message: Array<ArticolInterface>,
+  success: boolean
+}
 
 interface ArticolInterface {
-  Id: number;
-  domeniu: string;
+  id: number;
+  categorie: string;
   titlu: string;
-  autor_creare: object;
-  data_adaugarii: string;
+  autor: object;
+  dataCreari: string;
   continut: string;
-  protejat: boolean;
   link: string;
 }
