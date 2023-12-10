@@ -14,7 +14,7 @@ export class AccountClient {
 
     public login(userName: string, password: string): Observable<Result<string>> {
         return this.http.post<Result<string>>(
-            environment.apiPath + '/accounts/login', {
+            environment.apiPath + '/core/login', {
                 username: userName,
                 password: password
             }
@@ -23,7 +23,7 @@ export class AccountClient {
 
     public register(email: string, userName: string, password: string): Observable<Result<string>> {
         return this.http.post<Result<string>>(
-            environment.apiPath + '/accounts/register', {
+            environment.apiPath + '/core/register', {
                 email: email,
                 username: userName,
                 password: password

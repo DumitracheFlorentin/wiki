@@ -20,10 +20,10 @@ export class AuthenticationService {
   public login(username: string, password: string) {
     this.accountClient.login(username, password).subscribe({
         next: (result) => {
-          console.log(result);
           this.handleLogin(result);
         },
         error: (error: HttpErrorResponse) => {
+
           this.handleError(error);
         }
     });
@@ -84,8 +84,9 @@ export class AuthenticationService {
   }
 
   private handleLogin(result: Result<string>) {
+    console.log(result);
     var message : string;
-    console.log(result.result);
+    console.log(result);
     if(result.isSuccess && result.result.length > 1) {
       const decodedJwt = jwtDecode<any>(result.result);
       const user = new User(
