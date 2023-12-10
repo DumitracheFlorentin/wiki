@@ -10,11 +10,9 @@ import { AngularMarkdownEditorModule } from 'angular-markdown-editor'
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { ArticoleComponent } from './fetch-data/articole.component';
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
-import { AuthGuard } from './helpers/auth.guard';
 import { TokenInterceptor } from './helpers/token.interceptor';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,7 +34,6 @@ import {MatSelect, MatSelectModule} from '@angular/material/select';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
     ArticoleComponent,
     PostsComponent,
     CreateArticleComponent,
