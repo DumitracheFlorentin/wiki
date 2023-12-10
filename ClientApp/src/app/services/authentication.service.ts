@@ -89,9 +89,12 @@ export class AuthenticationService {
     console.log(result);
     if(result.isSuccess && result.result.length > 1) {
       const decodedJwt = jwtDecode<any>(result.result);
+
+      console.log('decodedJwt', decodedJwt);
+
       const user = new User(
-        decodedJwt[Claims.NameTokenKey],
-        decodedJwt[Claims.RoleTokenKey],
+        decodedJwt["sub"],
+        ["USER"],
         result.result
       );
       localStorage.setItem(this.userData, JSON.stringify(user));

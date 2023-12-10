@@ -50,8 +50,8 @@ export class CreateArticleComponent implements OnInit {
   ) 
   { 
     this.setTextIsProtected()
-    this.http.get<string[]>(environment.apiPath + '/articol/alldomains').subscribe(async result => {
-        this.domenii = result
+    this.http.get<AllDomainsInterface>(environment.apiPath + '/core/alldomains').subscribe(async result => {
+        this.domenii = result.message
     })
     
   }
@@ -96,21 +96,19 @@ export class CreateArticleComponent implements OnInit {
   }
 
   saveEdit(event: Event) {
-    this.markdownText = this.markdownTextCopy; // aici trebuie luat textul din form
+    this.markdownText = this.markdownTextCopy;
     this.isEditing = false;
     this.articol.continut = this.markdownText;
     this.articol.protejat = this.isProtected;
     this.articol.titlu = this.titleDomain.get('titlu')?.value;
     this.articol.domeniu = this.domeniuSelectat
 
-    console.log(this.articol);
     this.http.post<ArticolInterface>(
-      environment.apiPath + '/articol/create', {
-          Domeniu: this.articol.domeniu,
-          Titlu: this.articol.titlu,
-          User: this.authService.getUser()?.name,
-          Continut: this.articol.continut,
-          Protejat : this.articol.protejat,
+      environment.apiPath + '/core/create', {
+          categorie: this.articol.domeniu,
+          titlu: this.articol.titlu,
+          autor: this.authService.getUser()?.name,
+          continut: this.articol.continut
       }
   ).subscribe({
     next: (result) => {
@@ -175,6 +173,11 @@ export class CreateArticleComponent implements OnInit {
 
     return markedOutput;
   }
+}
+
+interface AllDomainsInterface {
+  message: Array<string>,
+  success: boolean
 }
 
 interface ArticolInterface {
